@@ -1,0 +1,32 @@
+name: Auto Update Beijing Limit
+
+on:
+  schedule:
+    - cron: '0 18 * * 0' # 每周日北京时间凌晨 2 点运行 (UTC 18:00)
+  workflow_dispatch: # 允许你手动点击运行
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Run script
+        run: python main.py
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add limit.ics
+          git commit -m "Update limit.ics with latest gov info" || exit 0
+          git push
