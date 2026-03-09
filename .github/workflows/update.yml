@@ -21,7 +21,7 @@ jobs:
         run: pip install requests beautifulsoup4
 
       - name: Run script
-        run: python main.py
+        run: python Get_latest_info.py
 
       - name: Commit and Push
         run: |
